@@ -41,6 +41,19 @@ a{
 }
 
 /* RESPONSIVE BEHAVIOUR FOR THE NAVBAR */
-@media only screen and (min-width: 100px){
+@media only screen and (min-width: 540px){
+  .navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    padding: 0 25px;
+  }
+  .navbar-logo, .navbar-nav{
+    padding: 0;
+  }
+  .navbar-nav a {
+    margin: 0 23px;
+  }
 
 }
