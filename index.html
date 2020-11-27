@@ -20,6 +20,54 @@
         <a href="#">Login</a>
     </nav>
 </header>
+<div class="container">
+    <nav class="sidebar">
+        <a href="#" class="sidebar-video active">Vidéo</a>
+        <a href="#">source video</a>
+        <a href="#" class="sidebar-comment">Commentaires</a>
+        <a href="#">Commentaires</a>
+    </nav>
+    <div class="main">
+        <div class="card-video">
+            <div class="title">
+            </div>
+            <div class="video">
+                <video id="video" controls>
+
+                    <source id="source" src="https://cdn.videvo.net/videvo_files/video/free/2012-07/small_watermarked/Countdown%20Timer_preview.webm"
+                            type="video/mp4">
+
+                    Sorry, your browser doesn't support embedded videos.
+                </video>
+            </div>
+            <div class="video-source">
+                <form>
+                    <div class="input-group">
+                        <input id="input-url" class="input-custom" type="text" placeholder="enter video URL" value="https://cdn.videvo.net/videvo_files/video/free/2012-07/small_watermarked/Countdown%20Timer_preview.webm">
+                        <small class="input-error"></small>
+                        <small>MP4 format only</small>
+                    </div>
+                    <div class="input-group small-input">
+                    <input id="input-offset-video" class="input-custom small-input" type="number" placeholder="enter offset time ( in seconds )" value="">
+                    </div>
+                </form>
+            </div>
+            <div class="description">
+                <button id="btn-rotate" class="button primary">Rotate</button>
+                <button id="btn-thumb" class="button primary">Display Preview</button>
+            </div>
+            <div id="preview"></div>
+            <div class="comments">
+                <div class="comment">
+                    <p>Un commentaire</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <aside class="aside">
+
+    </aside>
+</div>
 
 <script src="assets/js/main.js"></script>
 </body>

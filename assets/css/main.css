@@ -6,11 +6,35 @@ body{
   margin:0;
   line-height: 1.3;
 }
-
+*, *::before, *::after{
+  box-sizing: border-box;
+}
 a{
   color: inherit;
 }
 
+/* ----------GLOBAL UI ELEMENTS-------------*/
+.input-group{
+  margin: 12px 0
+}
+.input-custom{
+  padding: 12px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #2C3E50;
+}
+.small-input{
+  width: 50%;
+}
+.small-input input{
+  padding: 6px !important;
+}
+.input-error{
+  font-weight: bold;
+  color: #e74c3c;
+  margin-top: 0;
+}
+/* ----------END GLOBAL UI ELEMENTS-------------*/
 /* ----------NAVBAR-------------*/
 .navbar{
   background-color: #2C3E50;
@@ -55,5 +79,33 @@ a{
   .navbar-nav a {
     margin: 0 23px;
   }
+}
+/* ----------END NAVBAR-------------*/
+
+/* ----------CONTENT-------------*/
+.container{
+  padding: 0 15px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+/*___Video___*/
+video{
+  width: 80%;
+}
+
+.video{
+  padding: 30px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.video-source input{
+  width: 100%;
+}
+/* RESPONSIVE BEHAVIOUR FOR THE CONTENT */
+@media only screen and (min-width: 540px){
 
 }
+/* ----------END CONTENT-------------*/
+
