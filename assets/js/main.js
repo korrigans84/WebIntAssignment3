@@ -1,5 +1,24 @@
 (function () {
     window.localStorage.clear()
+    //Modal script
+    // Get the modal
+    var modal = document.getElementById("modal-login")
+    var span = document.getElementsByClassName("close")[0]
+// When the user clicks on the button, open the modal
+    document.getElementById("btn-login").onclick = function() {
+        modal.style.display = "block"
+    }
+
+// When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none"
+    }
+// When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none"
+        }
+    }
     /**
      * Rotation of the video, when the button rotate is clicked
      * @type {string}
@@ -7,6 +26,7 @@
     var user = window.localStorage.getItem('user')
     var comments = JSON.parse(window.localStorage.getItem('comments'))
     var video = document.getElementsByTagName('video')[0]
+    var controls=true;
     var videoContainer = document.getElementById('video')
     if(!user){
         //all actions if a user is not connected
@@ -45,7 +65,6 @@
         console.log(canvas)
         output.appendChild(canvas)
     })
-
     document.getElementById("input-offset-video").addEventListener('keyup', function (e) {
         var number = e.target.value
         video.currentTime = number
@@ -65,6 +84,14 @@
             document.getElementById("source").src=data
             document.getElementsByTagName('video')[0].load()
         }
+    })
+
+    document.getElementById('checkbox-controls').addEventListener('change', function (e) {
+        let checked = e.target.checked
+        video.controls = checked
+
+        //change the label
+        this.nextElementSibling.innerHTML = checked ? 'Hide controls' : 'Show controls'
     })
 
 

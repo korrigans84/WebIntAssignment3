@@ -17,7 +17,7 @@
     <nav class="navbar-nav">
         <a href="#" class="active" >Viewer</a>
         <a href="#">Videos</a>
-        <a href="#">Login</a>
+        <a id="btn-login" href="#">Login</a>
     </nav>
 </header>
 <div class="container">
@@ -55,6 +55,8 @@
             <div class="description">
                 <button id="btn-rotate" class="button primary">Rotate</button>
                 <button id="btn-thumb" class="button primary">Display Preview</button>
+                <input id="checkbox-controls" type="checkbox" checked>
+                <label for="checkbox-controls">Hide controls</label>
             </div>
             <div id="preview"></div>
             <div class="comments">
@@ -69,6 +71,42 @@
     </aside>
 </div>
 
+<!-- Login modal -->
+<div id="modal-login" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <form>
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Login</h2>
+            </div>
+            <div class="modal-body">
+
+                    <div class="row input-group">
+                        <input name="firstname" type="text" class="input-custom" placeholder="First name">
+                        <small class="input-error"></small>
+                    </div>
+                    <div class="row input-group">
+                        <input name="lastname" type="text" class="input-custom" placeholder="Last name">
+                        <small class="input-error"></small>
+                    </div>
+                    <div class="row input-group">
+                        <input name="email" type="email" class="input-custom" placeholder="Email address">
+                        <small class="input-error"></small>
+                    </div>
+                    <div class="row input-group">
+                        <input type="text" class="input-custom" placeholder="Phone number">
+                        <small class="input-error"></small>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="btn-submit-login-form">Login</button>
+            </div>
+        </form>
+    </div>
+
+</div>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
