@@ -1,33 +1,24 @@
 (function () {
-    window.localStorage.clear()
-    //Modal script
-    // Get the modal
-    var modal = document.getElementById("modal-login")
-    var span = document.getElementsByClassName("close")[0]
-// When the user clicks on the button, open the modal
-    document.getElementById("btn-login").onclick = function() {
-        modal.style.display = "block"
-    }
 
-// When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none"
-    }
-// When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none"
-        }
-    }
+
     /**
      * Rotation of the video, when the button rotate is clicked
      * @type {string}
      */
-    var user = window.localStorage.getItem('user')
+    var user = window.sessionStorage.getItem('user')
     var comments = JSON.parse(window.localStorage.getItem('comments'))
     var video = document.getElementsByTagName('video')[0]
-    var controls=true;
     var videoContainer = document.getElementById('video')
+
+    function getPosition(){
+        navigator.geolocation.getCurrentPosition(async function(position) {
+            const data = fetch(`https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDeswQ4TjSl8tny7WZLSmrQ_ea6dvZ0xK4&latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true'`)
+                .then(response => response.json())
+                .then(data => console.log(data))
+            console.log(data)
+        });
+    }
+    getPosition()
     if(!user){
         //all actions if a user is not connected
         Array.from(document.getElementsByClassName('comment')).forEach(
@@ -42,7 +33,56 @@
         )
         console.log('connected')
     }
+    //Comment form
+    document.getElementById("form-comment").addEventListener('submit', async function (e){
+        e.preventDefault()
+        var data = new FormData(formLogin)
+        comment=Object.fromEntries(data)
 
+        comments.push(comment)
+
+        window.localStorage.setItem('comments', JSON.stringify(comments))
+    })
+    //Modal script
+    // Get the modal
+    var modal = document.getElementById("modal-login")
+    var span = document.getElementsByClassName("close")[0]
+    var btnLogin = document.getElementById("btn-login")
+// When the user clicks on the button, open the modal
+    btnLogin.addEventListener('click', function() {
+        if(!user) {
+            modal.style.display = "block"
+        }
+        else{//logout
+            user=null
+            window.sessionStorage.removeItem('user')
+            btnLogin.innerHTML='Login'
+        }
+    })
+
+// When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none"
+    }
+// When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none"
+        }
+    }
+    //login form
+    var formLogin = document.getElementById("form-login")
+    formLogin.addEventListener('submit', function (e){
+        e.preventDefault()
+        if(!user) {
+            var data = new FormData(formLogin)
+            user=Object.fromEntries(data)
+            window.sessionStorage.setItem('user', JSON.stringify(user))
+            btnLogin.innerHTML="Logout"
+        }
+        modal.style.display = "none"
+
+    })
 
     var canvas = document.createElement('canvas')
     var ctx = canvas.getContext('2d')
@@ -54,8 +94,8 @@
     var rotate = 0
     document.getElementById("btn-rotate").addEventListener('click', function () {
         rotate += 0.5
-        document.getElementById('video').style.transform=`rotate(${rotate}turn)`
-        document.getElementById('video').style.transition="transform 1s"
+        video.style.transform=`rotate(${rotate}turn)`
+        video.style.transition="transform 1s"
     })
     document.getElementById("btn-thumb").addEventListener('click', function (){
         let output = document.getElementById("preview");
