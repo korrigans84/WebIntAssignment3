@@ -27,11 +27,12 @@
         <a href="#" class="sidebar-comment">Commentaires</a>
         <a href="#">Commentaires</a>
     </nav>
-    <div class="main">
-        <div class="card-video">
+    <section class="main">
+        <article class="card-video">
             <div class="title">
             </div>
             <div class="video">
+                <canvas id="preview"></canvas>
                 <video id="video" controls>
 
                     <source id="source" src="https://cdn.videvo.net/videvo_files/video/free/2012-07/small_watermarked/Countdown%20Timer_preview.webm"
@@ -57,19 +58,31 @@
                 <button id="btn-thumb" class="button primary">Display Preview</button>
                 <input id="checkbox-controls" type="checkbox" checked>
                 <label for="checkbox-controls">Hide controls</label>
+                <button id="btn-mirror" class="button primary">Mirror</button>
+                <canvas id="canvas-mirror"></canvas>
             </div>
-            <div id="preview"></div>
-            <div class="comments">
-                <div class="comment">
-                    <p>Un commentaire</p>
-                </div>
+            <div id="comments">
+
             </div>
             <form id="form-comment">
-                <textarea name="comment" class="input-custom" maxlength="1000" placeholder="Comment here"></textarea>
-                <button type="submit" >Add comment</button>
+                <div class="form-group">
+                <textarea id="comment-input" name="comment" class="input-custom input-area" maxlength="1000" placeholder="Comment here" value=""></textarea>
+                <button type="submit" class="button primary" >Add comment</button>
+                </div>
             </form>
-        </div>
-    </div>
+        </article>
+        <article id="video-circle">
+            <div class="video video-rounded">
+                <video autoplay loop>
+
+                    <source src="https://cdn.videvo.net/videvo_files/video/free/2012-07/small_watermarked/Countdown%20Timer_preview.webm"
+                            type="video/mp4">
+
+                    Sorry, your browser doesn't support embedded videos.
+                </video>
+            </div>
+        </article>
+    </section>
     <aside class="aside">
 
     </aside>
@@ -82,6 +95,7 @@
     <div class="modal-content">
         <form id="form-login">
             <div class="modal-header">
+                Login to the website
                 <span class="close">&times;</span>
                 <h2>Login</h2>
             </div>
@@ -100,12 +114,12 @@
                         <small class="input-error"></small>
                     </div>
                     <div class="row input-group">
-                        <input type="text" class="input-custom" placeholder="Phone number">
+                        <input type="number" class="input-custom" placeholder="Phone number">
                         <small class="input-error"></small>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="btn-submit-login-form">Login</button>
+                <button type="submit" class="button primary" id="btn-submit-login-form">Login</button>
             </div>
         </form>
     </div>

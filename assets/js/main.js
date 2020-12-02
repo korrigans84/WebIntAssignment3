@@ -1,3 +1,35 @@
+/**
+ * Function Time ago, for comments
+ * @param date
+ * @returns {string}
+ */
+function timeAgo(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+        return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+        return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+        return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+        return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+        return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+}
 (function () {
 
 
@@ -5,25 +37,64 @@
      * Rotation of the video, when the button rotate is clicked
      * @type {string}
      */
-    var user = window.sessionStorage.getItem('user')
-    var comments = JSON.parse(window.localStorage.getItem('comments'))
+
+    var user = window.sessionStorage.getItem('user')? JSON.parse(window.sessionStorage.getItem('user')) : null
+    var commentsFromLocalStorage =window.localStorage.getItem('comments')
+    var formComment = document.getElementById("form-comment")
+    var btnLogin = document.getElementById("btn-login")
+    var latitude = null
+    var longitude = null
+
+    var comments = commentsFromLocalStorage? JSON.parse(commentsFromLocalStorage): []
+    comments.forEach(comment => addCommentToDom(comment))
     var video = document.getElementsByTagName('video')[0]
     var videoContainer = document.getElementById('video')
 
     function getPosition(){
-        navigator.geolocation.getCurrentPosition(async function(position) {
-            const data = fetch(`https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDeswQ4TjSl8tny7WZLSmrQ_ea6dvZ0xK4&latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true'`)
-                .then(response => response.json())
-                .then(data => console.log(data))
-            console.log(data)
+        return navigator.geolocation.getCurrentPosition( function(position) {
+            latitude =  position.coords.latitude;
+            longitude =  position.coords.longitude;
+        }, function () {
+            console.error('unable to locate the user')
         });
     }
+
     getPosition()
+    function displayMap(e){
+
+    }
+    function addCommentToDom(comment) {
+        //${comment.user.firstname} ${comment.user.lastname.toUpperCase()}
+        var HTMLelement = document.createElement("div")
+        HTMLelement.classList.add('comment')
+        HTMLelement.style.display='block'// by default
+        HTMLelement.innerHTML = `<p>${comment.comment}</p>
+            <p class="comment-captions">
+            <span>  By ${comment.user.firstname} ${comment.user.lastname}, ${timeAgo(new Date(comment.date))} ago</span>
+            </p>`
+        if(comment.position){
+            HTMLelement.innerHTML+=`
+            <button id="btn-map-${comment.key}" class="button primary">Show position</button>
+            <iframe width="100%" height="400" style="display: none;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${comment.position.lat},${comment.position.long}&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+            `
+
+        }
+
+        if(!user){
+            HTMLelement.style.display='none'
+        }
+        document.getElementById("comments").appendChild(HTMLelement)
+        document.getElementById('btn-map-'+comment.key).addEventListener('click', function () {
+            console.log(this.nextSibling.nextSibling)
+
+            this.nextSibling.nextSibling.style.display='block'
+
+        })
+    }
+
     if(!user){
         //all actions if a user is not connected
-        Array.from(document.getElementsByClassName('comment')).forEach(
-            (comment) => {comment.style.display='none'}
-        )
+        formComment.children.item(0).style.display='none'
         console.log('not connected')
     }
     else {
@@ -31,23 +102,31 @@
         Array.from(document.getElementsByClassName('comment')).forEach(
             comment => comment.style.display='block'
         )
+        btnLogin.innerHTML='logout'
+
         console.log('connected')
     }
     //Comment form
-    document.getElementById("form-comment").addEventListener('submit', async function (e){
+   formComment.addEventListener('submit', async function (e){
         e.preventDefault()
-        var data = new FormData(formLogin)
+       console.log(getPosition())
+        var data = new FormData(formComment)
         comment=Object.fromEntries(data)
-
+       comment = {
+            key: Date.now(),
+            user: user,
+           position: {long: longitude, lat: latitude},
+           date: new Date(),
+           ...comment
+       }
         comments.push(comment)
-
         window.localStorage.setItem('comments', JSON.stringify(comments))
+       addCommentToDom(comment)
     })
     //Modal script
     // Get the modal
     var modal = document.getElementById("modal-login")
     var span = document.getElementsByClassName("close")[0]
-    var btnLogin = document.getElementById("btn-login")
 // When the user clicks on the button, open the modal
     btnLogin.addEventListener('click', function() {
         if(!user) {
@@ -79,12 +158,14 @@
             user=Object.fromEntries(data)
             window.sessionStorage.setItem('user', JSON.stringify(user))
             btnLogin.innerHTML="Logout"
+            Array.from(document.getElementsByClassName('comment')).forEach(comment => comment.style.display='block')
+            formComment.children.item(0).style.display='block'
         }
         modal.style.display = "none"
 
     })
 
-    var canvas = document.createElement('canvas')
+    var canvas = document.getElementById('preview')
     var ctx = canvas.getContext('2d')
     canvas.onclick = function(){
         window.open(this.toDataURL());
@@ -98,18 +179,30 @@
         video.style.transition="transform 1s"
     })
     document.getElementById("btn-thumb").addEventListener('click', function (){
-        let output = document.getElementById("preview");
         video.pause()
         ctx.drawImage(video, 0, 0, videoContainer.offsetWidth, videoContainer.offsetHeight)
-        output.innerHTML = '';
-        console.log(canvas)
-        output.appendChild(canvas)
+
     })
     document.getElementById("input-offset-video").addEventListener('keyup', function (e) {
         var number = e.target.value
         video.currentTime = number
     })
+    var mirrorCanvas = document.getElementById("canvas-mirror")
+    var mirrorContext = mirrorCanvas.getContext("2d")
+    mirrorContext.scale(-1,1)
+    mirrorContext.save()
+    function mirrorVideo(){
+        if(video.paused || video.ended){return}
+        mirrorContext.drawImage(video,0,0,-videoContainer.offsetWidth*0.5, videoContainer.offsetHeight*0.5)
+        setTimeout(mirrorVideo,0)
+        console.log(mirrorContext)
+    }
+    video.addEventListener("play", function (e){
+        mirrorVideo()
+    })
+    document.getElementById("btn-mirror").addEventListener('click', function (e) {
 
+    })
     document.getElementById("input-url").addEventListener('change', function (e) {
         var data = e.target.value
         var errorContainer = this.nextElementSibling;
