@@ -74,9 +74,12 @@ function timeAgo(date) {
             </p>`
         if(comment.position){
             HTMLelement.innerHTML+=`
-            <button id="btn-map-${comment.key}" class="button primary">Show position</button>
-            <iframe width="100%" height="400" style="display: none;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${comment.position.lat},${comment.position.long}&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
-            `
+            <details>
+            <summary>Show Localisation</summary>
+            <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${comment.position.lat},${comment.position.long}&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+           
+            </details>
+`
 
         }
 
@@ -84,12 +87,6 @@ function timeAgo(date) {
             HTMLelement.style.display='none'
         }
         document.getElementById("comments").appendChild(HTMLelement)
-        document.getElementById('btn-map-'+comment.key).addEventListener('click', function () {
-            console.log(this.nextSibling.nextSibling)
-
-            this.nextSibling.nextSibling.style.display='block'
-
-        })
     }
 
     if(!user){
@@ -200,9 +197,6 @@ function timeAgo(date) {
     video.addEventListener("play", function (e){
         mirrorVideo()
     })
-    document.getElementById("btn-mirror").addEventListener('click', function (e) {
-
-    })
     document.getElementById("input-url").addEventListener('change', function (e) {
         var data = e.target.value
         var errorContainer = this.nextElementSibling;
@@ -221,6 +215,7 @@ function timeAgo(date) {
 
     document.getElementById('checkbox-controls').addEventListener('change', function (e) {
         let checked = e.target.checked
+        console.log(checked)
         video.controls = checked
 
         //change the label

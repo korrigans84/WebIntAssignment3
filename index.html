@@ -4,36 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DevAtom</title>
+    <title>DevAtom | Webint</title>
 
     <!-- Police ROBOTO -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <!--Link for fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 <header class="navbar">
-    <a href="#" class="navbar-logo">Devatom</a>
+    <a href="#" class="navbar-logo">EURECOM : Webint assignment</a>
     <nav class="navbar-nav">
-        <a href="#" class="active" >Viewer</a>
-        <a href="#">Videos</a>
+        <a  href="https://github.com/korrigans84" target="_blank"><i class="fab fa-github"></i></a>
+        <a  href="https://www.linkedin.com/in/julien-thomas-48b227173/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
         <a id="btn-login" href="#">Login</a>
     </nav>
 </header>
-<div class="container">
+<section class="container banner">
+
+</section>
+<section class="container">
     <nav class="sidebar">
-        <a href="#" class="sidebar-video active">Vidéo</a>
-        <a href="#">source video</a>
-        <a href="#" class="sidebar-comment">Commentaires</a>
-        <a href="#">Commentaires</a>
+        <a href="#video" class="sidebar-video active">Video</a>
+        <a href="#controls-customs">source video</a>
+        <a href="#comments" class="sidebar-comment">Comments</a>
+        <a href="#video-circle"></a>
     </nav>
-    <section class="main">
+    <div class="main">
         <article class="card-video">
-            <div class="title">
-            </div>
+
+            <h1 class="text-primary">Video section :</h1>
             <div class="video">
                 <canvas id="preview"></canvas>
-                <video id="video" controls>
+                <video id="video" controls autoplay>
 
                     <source id="source" src="https://cdn.videvo.net/videvo_files/video/free/2012-07/small_watermarked/Countdown%20Timer_preview.webm"
                             type="video/mp4">
@@ -41,7 +46,7 @@
                     Sorry, your browser doesn't support embedded videos.
                 </video>
             </div>
-            <div class="video-source">
+            <div id="controls-customs" class="video-source">
                 <form>
                     <div class="input-group">
                         <input id="input-url" class="input-custom" type="text" placeholder="enter video URL" value="https://cdn.videvo.net/videvo_files/video/free/2012-07/small_watermarked/Countdown%20Timer_preview.webm">
@@ -58,9 +63,11 @@
                 <button id="btn-thumb" class="button primary">Display Preview</button>
                 <input id="checkbox-controls" type="checkbox" checked>
                 <label for="checkbox-controls">Hide controls</label>
-                <button id="btn-mirror" class="button primary">Mirror</button>
-                <canvas id="canvas-mirror"></canvas>
+                <div class="mirror">
+                    <canvas id="canvas-mirror"></canvas>
+                </div>
             </div>
+            <h2 class="text-primary">Comments :</h2>
             <div id="comments">
 
             </div>
@@ -72,6 +79,7 @@
             </form>
         </article>
         <article id="video-circle">
+            <h1 class="text-primary">Video circle :</h1>
             <div class="video video-rounded">
                 <video autoplay loop>
 
@@ -82,11 +90,11 @@
                 </video>
             </div>
         </article>
-    </section>
+    </div>
     <aside class="aside">
-
+        <p>eqfeqf</p>
     </aside>
-</div>
+</section>
 
 <!-- Login modal -->
 <div id="modal-login" class="modal">

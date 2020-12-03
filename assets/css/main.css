@@ -75,7 +75,22 @@ a{
   transition: color .3s;
   transition: background-color .3s;
 }
+
+.text-primary{
+  color: #2C3E50 !important;
+
+}
 /* ----------END GLOBAL UI ELEMENTS-------------*/
+/*---------BANNER---------------*/
+.banner{
+  width: 100%;
+  min-height: 400px;
+  height: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/devatom-57c11.appspot.com/o/DevAtom_logo.png?alt=media");
+}
 /* ----------NAVBAR-------------*/
 .navbar{
   background-color: #2C3E50;
@@ -121,19 +136,85 @@ a{
     margin: 0 23px;
   }
 }
+.fab{
+  font-size: large;
+}
 /* ----------END NAVBAR-------------*/
 
+/* ----------SIDEBAR-------------*/
+.sidebar{
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.sidebar a {
+  width: 50%;
+  display: block;
+  text-decoration: none;
+  padding: .6em 0;
+  border: 1px solid transparent;
+  transition: .3s;
+  padding-left: 10px;
+
+}
+.sidebar a:hover,
+.sidebar a .active {
+  color: #000;
+  border: solid 1px #dbdbdb;
+  border-radius: 3px;
+  background: #fff;
+  font-weight: bold;
+}
+/* ----------END SIDEBAR-------------*/
+.aside{
+  
+}
 /* ----------CONTENT-------------*/
 
+
+@media screen and (min-width: 1050px) {
+  .container{
+    display: flex;
+
+  }
+  .main{
+    margin-left: 30px;
+    margin-right: 30px;
+    width: 100%;
+  }
+  .sidebar{
+    flex: none;
+    width: 180px;
+    display: block;
+  }
+  .sidebar a {
+    width: 100%;
+  }
+  .aside{
+    width: 310px;
+    flex: none;
+  }
+
+}
 /* -------------- FIRST ARTICLE : VIDEO AND CONTROLS ------------------- */
+article{
+  padding: 8px;
+  border: solid 1px #dbdbdb;
+  border-radius: 3px;
+  background: #fff;
+  margin-bottom: 30px;
+}
 .container{
   padding: 0 15px;
   max-width: 1080px;
   margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 /*___Video___*/
 video{
-  width: 80%;
+  width: 100%;
 }
 
 .video{
@@ -148,6 +229,12 @@ video{
 }
 #preview{
   position: absolute;
+}
+.mirror{
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
 }
 /*---comments---*/
 #comments{
