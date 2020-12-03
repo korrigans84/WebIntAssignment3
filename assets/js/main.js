@@ -33,22 +33,24 @@ function timeAgo(date) {
 (function () {
 
 
-    /**
-     * Rotation of the video, when the button rotate is clicked
-     * @type {string}
-     */
-
     var user = window.sessionStorage.getItem('user')? JSON.parse(window.sessionStorage.getItem('user')) : null
     var commentsFromLocalStorage =window.localStorage.getItem('comments')
-    var formComment = document.getElementById("form-comment")
-    var btnLogin = document.getElementById("btn-login")
     var latitude = null
     var longitude = null
 
+    //Getter of DOM elements
+    var formComment = document.getElementById("form-comment")
+    var btnLogin = document.getElementById("btn-login")
     var comments = commentsFromLocalStorage? JSON.parse(commentsFromLocalStorage): []
-    comments.forEach(comment => addCommentToDom(comment))
     var video = document.getElementsByTagName('video')[0]
     var videoContainer = document.getElementById('video')
+
+    var modal = document.getElementById("modal-login")
+    var span = document.getElementsByClassName("close")[0]
+    var mirrorCanvas = document.getElementById("canvas-mirror")
+
+    var formLogin = document.getElementById("form-login")
+    var userInfo = document.getElementById('profile')
 
     function getPosition(){
         return navigator.geolocation.getCurrentPosition( function(position) {
@@ -58,11 +60,8 @@ function timeAgo(date) {
             console.error('unable to locate the user')
         });
     }
-
     getPosition()
-    function displayMap(e){
 
-    }
     function addCommentToDom(comment) {
         //${comment.user.firstname} ${comment.user.lastname.toUpperCase()}
         var HTMLelement = document.createElement("div")
@@ -88,22 +87,44 @@ function timeAgo(date) {
         }
         document.getElementById("comments").appendChild(HTMLelement)
     }
+    function displayUserInfos(){
+        userInfo.innerHTML=`            
+            <img src="https://eu.ui-avatars.com/api/?name=${user.firstname}+${user.lastname}">
+            <p>
+            Welcome ${user.firstname}
+            
+            </p>
 
-    if(!user){
-        //all actions if a user is not connected
-        formComment.children.item(0).style.display='none'
-        console.log('not connected')
+            `
+        userInfo.style.display='block'
     }
-    else {
-        //all actions if a user is connected locally
-        Array.from(document.getElementsByClassName('comment')).forEach(
-            comment => comment.style.display='block'
-        )
-        btnLogin.innerHTML='logout'
+    function initialize(){
+        //comments
+        comments.forEach(comment => addCommentToDom(comment))
+        //user
+        if(!user){
+            userInfo.style.display='none'
+            //all actions if a user is not connected
+            formComment.children.item(0).style.display='none'
+            console.log('not connected')
+        }
+        else {
+            displayUserInfos()
+            //all actions if a user is connected locally
+            Array.from(document.getElementsByClassName('comment')).forEach(
+                comment => comment.style.display='block'
+            )
+            btnLogin.innerHTML='logout'
 
-        console.log('connected')
+            console.log('connected')
+        }
     }
-    //Comment form
+    initialize()
+
+    /**********************************************************
+     *                  Events Listeners
+     ********************************************************/
+    //Comment form handle submit
    formComment.addEventListener('submit', async function (e){
         e.preventDefault()
        console.log(getPosition())
@@ -120,11 +141,8 @@ function timeAgo(date) {
         window.localStorage.setItem('comments', JSON.stringify(comments))
        addCommentToDom(comment)
     })
-    //Modal script
-    // Get the modal
-    var modal = document.getElementById("modal-login")
-    var span = document.getElementsByClassName("close")[0]
-// When the user clicks on the button, open the modal
+
+    // When the user clicks on the login button, open the modal
     btnLogin.addEventListener('click', function() {
         if(!user) {
             modal.style.display = "block"
@@ -133,21 +151,21 @@ function timeAgo(date) {
             user=null
             window.sessionStorage.removeItem('user')
             btnLogin.innerHTML='Login'
+            userInfo.style.display='none'
         }
     })
 
-// When the user clicks on <span> (x), close the modal
+    // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
         modal.style.display = "none"
     }
-// When the user clicks anywhere outside of the modal, close it
+    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none"
         }
     }
     //login form
-    var formLogin = document.getElementById("form-login")
     formLogin.addEventListener('submit', function (e){
         e.preventDefault()
         if(!user) {
@@ -157,6 +175,7 @@ function timeAgo(date) {
             btnLogin.innerHTML="Logout"
             Array.from(document.getElementsByClassName('comment')).forEach(comment => comment.style.display='block')
             formComment.children.item(0).style.display='block'
+            displayUserInfos()
         }
         modal.style.display = "none"
 
@@ -167,7 +186,6 @@ function timeAgo(date) {
     canvas.onclick = function(){
         window.open(this.toDataURL());
     };
-
 
     var rotate = 0
     document.getElementById("btn-rotate").addEventListener('click', function () {
@@ -184,7 +202,8 @@ function timeAgo(date) {
         var number = e.target.value
         video.currentTime = number
     })
-    var mirrorCanvas = document.getElementById("canvas-mirror")
+
+    //mirror video
     var mirrorContext = mirrorCanvas.getContext("2d")
     mirrorContext.scale(-1,1)
     mirrorContext.save()
@@ -192,7 +211,6 @@ function timeAgo(date) {
         if(video.paused || video.ended){return}
         mirrorContext.drawImage(video,0,0,-videoContainer.offsetWidth*0.5, videoContainer.offsetHeight*0.5)
         setTimeout(mirrorVideo,0)
-        console.log(mirrorContext)
     }
     video.addEventListener("play", function (e){
         mirrorVideo()
@@ -209,7 +227,7 @@ function timeAgo(date) {
             errorContainer.innerHTML=' '
             this.style.border="1px solid #2C3E50"
             document.getElementById("source").src=data
-            document.getElementsByTagName('video')[0].load()
+            video.load()
         }
     })
 
@@ -222,6 +240,15 @@ function timeAgo(date) {
         this.nextElementSibling.innerHTML = checked ? 'Hide controls' : 'Show controls'
     })
 
+    //Duplication of code is bad.. I don't have enouth time to find another solution
+    document.getElementById('suggestion1').addEventListener('click', function (e) {
+        document.getElementById("source").src=this.getAttribute('data')
+        video.load()
+    })
+    document.getElementById('suggestion2').addEventListener('click', function (e) {
+        document.getElementById("source").src=this.getAttribute('data')
+        video.load()
+    })
 
 
 })();

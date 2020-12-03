@@ -12,6 +12,9 @@ body{
 a{
   color: inherit;
 }
+html{
+  scroll-behavior: smooth;
+}
 
 /* ----------GLOBAL UI ELEMENTS-------------*/
 .row{
@@ -78,7 +81,6 @@ a{
 
 .text-primary{
   color: #2C3E50 !important;
-
 }
 /* ----------END GLOBAL UI ELEMENTS-------------*/
 /*---------BANNER---------------*/
@@ -86,10 +88,15 @@ a{
   width: 100%;
   min-height: 400px;
   height: auto;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/devatom-57c11.appspot.com/o/DevAtom_logo.png?alt=media");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/devatom-57c11.appspot.com/o/webint-cover.jpg?alt=media");
+}
+.title{
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 /* ----------NAVBAR-------------*/
 .navbar{
@@ -167,9 +174,32 @@ a{
   font-weight: bold;
 }
 /* ----------END SIDEBAR-------------*/
+/* ----------ASIDE-------------*/
 .aside{
   
 }
+.profile img{
+  border-radius: 50%;
+}
+.aside h1{
+  color: #2C3E50;
+  border-bottom: 2px solid #2C3E50;
+}
+.aside .suggestion{
+  display: flex;
+  flex-wrap: nowrap;
+}
+.aside .suggestion:hover{
+  border: 2px solid #2C3E50;
+  transform: translateX(20px);
+  transition: .3s;
+}
+.aside .suggestion img{
+  float: left;
+  margin-right: 6px;
+  width: 50%;
+}
+/* ----------END ASIDE-------------*/
 /* ----------CONTENT-------------*/
 
 
@@ -198,7 +228,7 @@ a{
 
 }
 /* -------------- FIRST ARTICLE : VIDEO AND CONTROLS ------------------- */
-article{
+article, .profile{
   padding: 8px;
   border: solid 1px #dbdbdb;
   border-radius: 3px;
